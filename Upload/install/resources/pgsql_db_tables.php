@@ -33,6 +33,8 @@ $tables[] = "CREATE TABLE mybb_adminoptions (
   defaultviews text NOT NULL,
   loginattempts smallint NOT NULL default '0',
   loginlockoutexpiry int NOT NULL default '0',
+  2fasecret varchar(16) NOT NULL default '',
+  recovery_codes varchar(177) NOT NULL default '',
   UNIQUE (uid)
 );";
 
@@ -44,7 +46,8 @@ $tables[] = "CREATE TABLE mybb_adminsessions (
 	dateline int NOT NULL default '0',
 	lastactive int NOT NULL default '0',
 	data text NOT NULL default '',
-	useragent varchar(100) NOT NULL default ''
+	useragent varchar(100) NOT NULL default '',
+	authenticated smallint NOT NULL default '0'
 );";
 
 $tables[] = "CREATE TABLE mybb_adminviews (
@@ -960,6 +963,7 @@ $tables[] = "CREATE TABLE mybb_usergroups (
   showforumteam smallint NOT NULL default '0',
   usereputationsystem smallint NOT NULL default '0',
   cangivereputations smallint NOT NULL default '0',
+  candeletereputations smallint NOT NULL default '0',
   reputationpower int NOT NULL default '0',
   maxreputationsday int NOT NULL default '0',
   maxreputationsperuser int NOT NULL default '0',

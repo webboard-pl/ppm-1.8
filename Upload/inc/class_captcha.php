@@ -41,6 +41,7 @@ class captcha
 	 * 1 = Default CAPTCHA
 	 * 2 = reCAPTCHA
 	 * 3 = Are You a Human
+	 * 4 = NoCATPCHA reCAPTCHA
 	 *
 	 * @var int
 	 */
@@ -101,9 +102,17 @@ class captcha
 
 	function __construct($build = false, $template = "")
 	{
-		global $mybb;
+		global $mybb, $plugins;
 
 		$this->type = $mybb->settings['captchaimage'];
+
+		$args = array(
+			'this' => &$this,
+			'build' => &$build,
+			'template' => &$template,
+		);
+
+		$plugins->run_hooks('captcha_build_start', $args);
 
 		// Prepare the build template
 		if($template)
@@ -117,6 +126,9 @@ class captcha
 			else if($this->type == 3)
 			{
 				$this->captcha_template .= "_ayah";
+			}
+			else if($this->type == 4){
+				$this->captcha_template .= "_nocaptcha";
 			}
 		}
 
@@ -147,6 +159,18 @@ class captcha
 				$this->build_recaptcha();
 			}
 		}
+		else if($this->type == 4 && $mybb->settings['captchapublickey'] && $mybb->settings['captchaprivatekey'])
+		{
+			// We want to use reCAPTCHA, set the server options
+			$this->server = "http://www.google.com/recaptcha/api.js";
+			$this->secure_server = "https://www.google.com/recaptcha/api.js";
+			$this->verify_server = "https://www.google.com/recaptcha/api/siteverify";
+
+			if($build == true)
+			{
+				$this->build_recaptcha();
+			}
+		}
 		else if($this->type == 1)
 		{
 			if(!function_exists("imagecreatefrompng"))
@@ -160,7 +184,7 @@ class captcha
 			}
 		}
 
-		// Plugin hook
+		$plugins->run_hooks('captcha_build_end', $args);
 	}
 
 	function build_captcha($return = false)
@@ -259,9 +283,9 @@ class captcha
 
 	function validate_captcha()
 	{
-		global $db, $lang, $mybb;
+		global $db, $lang, $mybb, $session, $plugins;
 
-		// Plugin hook
+		$plugins->run_hooks('captcha_validate_start', $this);
 
 		if($this->type == 1)
 		{
@@ -269,7 +293,18 @@ class captcha
 			$imagehash = $db->escape_string($mybb->input['imagehash']);
 			$imagestring = $db->escape_string(my_strtolower($mybb->input['imagestring']));
 
-			$query = $db->simple_select("captcha", "*", "imagehash = '{$imagehash}' AND LOWER(imagestring) = '{$imagestring}'");
+			switch($db->type)
+			{
+				case 'mysql':
+				case 'mysqli':
+					$field = 'imagestring';
+					break;
+				default:
+					$field = 'LOWER(imagestring)';
+					break;
+			}
+
+			$query = $db->simple_select("captcha", "*", "imagehash = '{$imagehash}' AND {$field} = '{$imagestring}'");
 			$imgcheck = $db->fetch_array($query);
 
 			if(!$imgcheck)
@@ -335,6 +370,39 @@ class captcha
 				}
 			}
 		}
+		elseif($this->type == 4)
+		{
+			$response = $mybb->input['g-recaptcha-response'];
+			if(!$response || strlen($response) == 0)
+			{
+				$this->set_error($lang->invalid_nocaptcha);
+			}
+			else
+			{
+				// We have a noCAPTCHA to handle
+				// Contact Google and see if our reCAPTCHA was successful
+				$response = fetch_remote_file($this->verify_server, array(
+					'secret' => $mybb->settings['captchaprivatekey'],
+					'remoteip' => $session->ipaddress,
+					'response' => $response
+				));
+
+				if($response == false)
+				{
+					$this->set_error($lang->invalid_nocaptcha_transmit);
+				}
+				else
+				{
+					$answer = json_decode($response, true);
+
+					if($answer['success'] != 'true')
+					{
+						// We got it wrong! Oh no...
+						$this->set_error($lang->invalid_nocaptcha);
+					}
+				}
+			}
+		}
 		elseif($this->type == 3)
 		{
 			define('AYAH_PUBLISHER_KEY', $this->ayah_publisher_key);
@@ -354,7 +422,7 @@ class captcha
 			}
 		}
 
-		// Plugin hook
+		$plugins->run_hooks('captcha_validate_end', $this);
 
 		if(count($this->errors) > 0)
 		{
@@ -368,7 +436,7 @@ class captcha
 
 	function invalidate_captcha()
 	{
-		global $db, $mybb;
+		global $db, $mybb, $plugins;
 
 		if($this->type == 1)
 		{
@@ -381,7 +449,7 @@ class captcha
 		}
 		// Not necessary for reCAPTCHA or Are You a Human
 
-		// Plugin hook
+		$plugins->run_hooks('captcha_invalidate_end', $this);
 	}
 
 	/**

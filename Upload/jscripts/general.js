@@ -27,7 +27,7 @@ var MyBB = {
 
 		// Initialise "initial focus" field if we have one
 		var initialfocus = $(".initial_focus");
-		if(initialfocus.length > 0)
+		if(initialfocus.length)
 		{
 			initialfocus.focus();
 		}
@@ -72,7 +72,7 @@ var MyBB = {
 
 	popupWindow: function(url, options, root)
 	{
-		if(!options) options = { fadeDuration: 250, zIndex: 5 }
+		if(!options) options = { fadeDuration: 250, zIndex: (typeof modal_zindex !== 'undefined' ? modal_zindex : 9999) }
 		if(root != true)
 			url = rootpath + url;
 
@@ -152,12 +152,12 @@ var MyBB = {
 			var pid = 0;
 		}
 
-		MyBB.popupWindow("/reputation.php?action=add&uid="+uid+"&pid="+pid);
+		MyBB.popupWindow("/reputation.php?action=add&uid="+uid+"&pid="+pid+"&modal=1");
 	},
 
 	viewNotes: function(uid)
 	{
-		MyBB.popupWindow("/member.php?action=viewnotes&uid="+uid);
+		MyBB.popupWindow("/member.php?action=viewnotes&uid="+uid+"&modal=1");
 	},
 
 	deleteReputation: function(uid, rid)
@@ -218,13 +218,13 @@ var MyBB = {
 
 	whoPosted: function(tid)
 	{
-		MyBB.popupWindow("/misc.php?action=whoposted&tid="+tid);
+		MyBB.popupWindow("/misc.php?action=whoposted&tid="+tid+"&modal=1");
 	},
 
 	markForumRead: function(event)
 	{
 		var element = $(event);
-		if(!element)
+		if(!element.length)
 		{
 			return false;
 		}
@@ -249,15 +249,16 @@ var MyBB = {
 	{
 		if(request == 1)
 		{
-			if($("#mark_read_"+fid).hasClass('subforum_minion'))
+			var markreadfid = $("#mark_read_"+fid);
+			if(markreadfid.hasClass('subforum_minion'))
 			{
-				$("#mark_read_"+fid).removeClass('subforum_minion').addClass('subforum_minioff');
+				markreadfid.removeClass('subforum_minion').addClass('subforum_minioff');
 			}
 			else
 			{
-				$("#mark_read_"+fid).removeClass('forum_on').addClass('forum_off');
+				markreadfid.removeClass('forum_on').addClass('forum_off');
 			}
-			$("#mark_read_"+fid).css("cursor", "default").attr("title", lang.no_new_posts);
+			markreadfid.css("cursor", "default").attr("title", lang.no_new_posts);
 		}
 	},
 
@@ -283,7 +284,7 @@ var MyBB = {
 	changeLanguage: function()
 	{
 		form = $("#lang_select");
-		if(!form)
+		if(!form.length)
 		{
 			return false;
 		}
@@ -293,7 +294,7 @@ var MyBB = {
 	changeTheme: function()
 	{
 		form = $("#theme_select");
-		if(!form)
+		if(!form.length)
 		{
 			return false;
 		}
@@ -341,8 +342,8 @@ var MyBB = {
 
 	dismissPMNotice: function(bburl)
 	{
-		var pm_notice = $("#content").find("#pm_notice");
-		if(!pm_notice)
+		var pm_notice = $("#pm_notice");
+		if(!pm_notice.length)
 		{
 			return false;
 		}
@@ -373,7 +374,7 @@ var MyBB = {
 
 		$.ajax({
 			type: "POST",
-			url: "reputation.php",
+			url: "reputation.php?modal=1",
 			data: datastring,
 			dataType: "html",
 			success: function(data) {
@@ -381,6 +382,7 @@ var MyBB = {
 				$(".modal_"+uid+"_"+pid).fadeOut('slow', function() {
 					$(".modal_"+uid+"_"+pid).html(data);
 					$(".modal_"+uid+"_"+pid).fadeIn('slow');
+					$(".modal").fadeIn('slow');
 				});
 			},
 			error: function(){
@@ -577,7 +579,7 @@ var expandables = {
 			if(expandedItem.is(":hidden"))
 			{
 				expandedItem.toggle("fast");
-				element.attr("src", element.attr("src").replace("collapse_collapsed.png", "collapse.png"))
+				element.attr("src", element.attr("src").replace(/collapse_collapsed\.(gif|jpg|jpeg|bmp|png)$/i, "collapse.$1"))
 									.attr("alt", "[-]")
 									.attr("title", "[-]");
 				element.parent().parent('td').removeClass('tcat_collapse_collapsed');
@@ -588,7 +590,7 @@ var expandables = {
 			else
 			{
 				expandedItem.toggle("fast");
-				element.attr("src", element.attr("src").replace("collapse.png", "collapse_collapsed.png"))
+				element.attr("src", element.attr("src").replace(/collapse\.(gif|jpg|jpeg|bmp|png)$/i, "collapse_collapsed.$1"))
 									.attr("alt", "[+]")
 									.attr("title", "[+]");
 				element.parent().parent('td').addClass('tcat_collapse_collapsed');

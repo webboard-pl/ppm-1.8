@@ -19,13 +19,13 @@ require_once "./global.php";
 // Load language files
 $lang->load("managegroup");
 
-$gid = $mybb->get_input('gid', 1);
+$gid = $mybb->get_input('gid', MyBB::INPUT_INT);
 if(!isset($groupscache[$gid]))
 {
 	error($lang->invalid_group);
 }
 $usergroup = $groupscache[$gid];
-$lang->nav_group_management = $lang->sprintf($lang->nav_group_management, $usergroup['title']);
+$lang->nav_group_management = $lang->sprintf($lang->nav_group_management, htmlspecialchars_uni($usergroup['title']));
 add_breadcrumb($lang->nav_group_memberships, "usercp.php?action=usergroups");
 add_breadcrumb($lang->nav_group_management, "managegroup.php?gid=$gid");
 
@@ -169,10 +169,10 @@ elseif($mybb->input['action'] == "do_joinrequests" && $mybb->request_method == "
 	$plugins->run_hooks("managegroup_do_joinrequests_start");
 
 	$uidin = null;
-	if(is_array($mybb->get_input('request', 2)))
+	if(is_array($mybb->get_input('request', MyBB::INPUT_ARRAY)))
 	{
 		$uidin = array();
-		foreach($mybb->get_input('request', 2) as $uid => $what)
+		foreach($mybb->get_input('request', MyBB::INPUT_ARRAY) as $uid => $what)
 		{
 			if($what == "accept")
 			{
@@ -219,7 +219,7 @@ elseif($mybb->input['action'] == "joinrequests")
 	{
 		error($lang->no_requests);
 	}
-	$lang->join_requests = $lang->sprintf($lang->join_requests_title,htmlspecialchars_uni($usergroup['title']));
+	$lang->join_requests = $lang->sprintf($lang->join_requests_title, htmlspecialchars_uni($usergroup['title']));
 
 	$plugins->run_hooks("managegroup_joinrequests_end");
 
@@ -238,9 +238,9 @@ elseif($mybb->input['action'] == "do_manageusers" && $mybb->request_method == "p
 
 	$plugins->run_hooks("managegroup_do_manageusers_start");
 
-	if(is_array($mybb->get_input('removeuser', 2)))
+	if(is_array($mybb->get_input('removeuser', MyBB::INPUT_ARRAY)))
 	{
-		foreach($mybb->get_input('removeuser', 2) as $uid)
+		foreach($mybb->get_input('removeuser', MyBB::INPUT_ARRAY) as $uid)
 		{
 			leave_usergroup($uid, $gid);
 		}
@@ -258,9 +258,9 @@ else
 {
 	$plugins->run_hooks("managegroup_start");
 
-	$lang->members_of = $lang->sprintf($lang->members_of, $usergroup['title']);
-	$lang->add_member = $lang->sprintf($lang->add_member, $usergroup['title']);
-	$lang->invite_member = $lang->sprintf($lang->invite_member, $usergroup['title']);
+	$lang->members_of = $lang->sprintf($lang->members_of, htmlspecialchars_uni($usergroup['title']));
+	$lang->add_member = $lang->sprintf($lang->add_member, htmlspecialchars_uni($usergroup['title']));
+	$lang->invite_member = $lang->sprintf($lang->invite_member, htmlspecialchars_uni($usergroup['title']));
 	$joinrequests = '';
 	if($usergroup['type'] == 5)
 	{
@@ -342,7 +342,7 @@ else
 		error($lang->group_no_members);
 	}*/
 	$perpage = $mybb->settings['membersperpage'];
-	$page = $mybb->get_input('page', 1);
+	$page = $mybb->get_input('page', MyBB::INPUT_INT);
 	if($page && $page > 0)
 	{
 		$start = ($page-1) *$perpage;

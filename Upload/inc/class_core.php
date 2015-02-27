@@ -14,14 +14,14 @@ class MyBB {
 	 *
 	 * @var string
 	 */
-	public $version = "1.8.3";
+	public $version = "1.8.4";
 
 	/**
 	 * The version code of MyBB we're running.
 	 *
 	 * @var integer
 	 */
-	public $version_code = 1803;
+	public $version_code = 1804;
 
 	/**
 	 * The current working directory.
@@ -417,7 +417,7 @@ class MyBB {
 					switch($type)
 					{
 						case "int":
-							$this->input[$var] = $this->get_input($var, 1);
+							$this->input[$var] = $this->get_input($var, MyBB::INPUT_INT);
 							break;
 						case "a-z":
 							$this->input[$var] = preg_replace("#[^a-z\.\-_]#i", "", $this->get_input($var));
@@ -497,7 +497,6 @@ class MyBB {
 				$path = substr($path, 2);
 			}
 
-			$base_path = '';
 			if($use_cdn && $this->settings['usecdn'] && !empty($this->settings['cdnurl']))
 			{
 				$base_path = rtrim($this->settings['cdnurl'], '/');

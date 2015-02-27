@@ -29,6 +29,8 @@ $tables[] = "CREATE TABLE mybb_adminoptions (
   defaultviews text NOT NULL,
   loginattempts smallint unsigned NOT NULL default '0',
   loginlockoutexpiry int unsigned NOT NULL default '0',
+  2fasecret varchar(16) NOT NULL default '',
+  recovery_codes varchar(177) NOT NULL default '',
   PRIMARY KEY (uid)
 ) ENGINE=MyISAM;";
 
@@ -40,7 +42,8 @@ $tables[] = "CREATE TABLE mybb_adminsessions (
   dateline int unsigned NOT NULL default '0',
   lastactive int unsigned NOT NULL default '0',
   data TEXT NOT NULL,
-  useragent varchar(100) NOT NULL default ''
+  useragent varchar(100) NOT NULL default '',
+  authenticated tinyint(1) NOT NULL default '0'
 ) ENGINE=MyISAM;";
 
 $tables[] = "CREATE TABLE mybb_adminviews (
@@ -997,6 +1000,7 @@ $tables[] = "CREATE TABLE mybb_usergroups (
   showforumteam tinyint(1) NOT NULL default '0',
   usereputationsystem tinyint(1) NOT NULL default '0',
   cangivereputations tinyint(1) NOT NULL default '0',
+  candeletereputations tinyint(1) NOT NULL default '0',
   reputationpower int unsigned NOT NULL default '0',
   maxreputationsday int unsigned NOT NULL default '0',
   maxreputationsperuser int unsigned NOT NULL default '0',

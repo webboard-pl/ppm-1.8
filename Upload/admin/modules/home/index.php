@@ -131,9 +131,12 @@ if($mybb->input['action'] == "version_check")
 					)
 				);
 
+				$description = preg_replace('#<img(.*)/>#', '', $description);
+				$content = preg_replace('#<img(.*)/>#', '', $content);
+
 				$updated_cache['news'][] = array(
 					'title' => htmlspecialchars_uni($item['title']),
-					'description' => preg_replace('#<img(.*)/>#', '', $description),
+					'description' => $description,
 					'link' => htmlspecialchars_uni($item['link']),
 					'author' => htmlspecialchars_uni($item['author']),
 					'dateline' => $item['date_timestamp'],
@@ -315,7 +318,7 @@ elseif(!$mybb->input['action'])
 	$table->construct_cell("<strong>{$lang->sql_engine}</strong>", array('width' => '25%'));
 	$table->construct_cell($db->short_title." ".$db->get_version(), array('width' => '25%'));
 	$table->construct_cell("<strong>{$lang->users}</strong>", array('width' => '25%'));
-	$table->construct_cell("<a href=\"index.php?module=user-users\"><strong>{$users}</strong> {$lang->registered_users}</a><br /><strong>{$activeusers}</strong> {$lang->active_users}<br /><strong>{$newusers}</strong> {$lang->registrations_today}<br /><a href=\"index.php?module=user-users&amp;action=search&amp;results=1&amp;conditions=".urlencode(serialize(array('usergroup' => '5')))."&amp;from=home\"><strong>{$awaitingusers}</strong> {$lang->awaiting_activation}</a>", array('width' => '25%'));
+	$table->construct_cell("<a href=\"index.php?module=user-users\"><strong>{$users}</strong> {$lang->registered_users}</a><br /><strong>{$activeusers}</strong> {$lang->active_users}<br /><strong>{$newusers}</strong> {$lang->registrations_today}<br /><a href=\"index.php?module=user-users&amp;action=search&amp;results=1&amp;conditions=".urlencode(my_serialize(array('usergroup' => '5')))."&amp;from=home\"><strong>{$awaitingusers}</strong> {$lang->awaiting_activation}</a>", array('width' => '25%'));
 	$table->construct_row();
 
 	$table->construct_cell("<strong>{$lang->server_load}</strong>", array('width' => '25%'));

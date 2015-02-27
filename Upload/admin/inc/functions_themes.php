@@ -220,7 +220,7 @@ function import_theme_xml($xml, $options=array())
 	else
 	{
 		$db->delete_query("themestylesheets", "tid='{$options['tid']}'");
-		$db->update_query("themes", array("properties" => $db->escape_string(serialize($properties))), "tid='{$options['tid']}'");
+		$db->update_query("themes", array("properties" => $db->escape_string(my_serialize($properties))), "tid='{$options['tid']}'");
 		$theme_id = $options['tid'];
 	}
 
@@ -327,7 +327,7 @@ function import_theme_xml($xml, $options=array())
 		}
 		// Now we have our list of built stylesheets, save them
 		$updated_theme = array(
-			"stylesheets" => $db->escape_string(serialize($theme_stylesheets))
+			"stylesheets" => $db->escape_string(my_serialize($theme_stylesheets))
 		);
 
 		if(is_array($properties['disporder']))
@@ -344,7 +344,7 @@ function import_theme_xml($xml, $options=array())
 			}
 
 			$properties['disporder'] = $orders;
-			$updated_theme['properties'] = $db->escape_string(serialize($properties));
+			$updated_theme['properties'] = $db->escape_string(my_serialize($properties));
 		}
 
 		$db->update_query("themes", $updated_theme, "tid='{$theme_id}'");
@@ -441,27 +441,8 @@ function cache_stylesheet($tid, $filename, $stylesheet)
 	@fwrite($fp_min, $stylesheet_min);
 	@fclose($fp_min);
 
-	if($mybb->settings['usecdn'] && !empty($mybb->settings['cdnpath']))
-	{
-		$cdn_path         = rtrim($mybb->settings['cdnpath'], '/\\');
-		$cache_themes_dir = $cdn_path . '/' . $theme_directory;
-
-		$copy_to_cdn = true;
-
-		if(!is_dir($cache_themes_dir))
-		{
-			if(!@mkdir($cache_themes_dir))
-			{
-				$copy_to_cdn = false;
-			}
-		}
-
-		if($copy_to_cdn)
-		{
-			@copy(MYBB_ROOT . "{$theme_directory}/{$filename}", "{$cache_themes_dir}/{$filename}");
-			@copy(MYBB_ROOT . "{$theme_directory}/{$filename_min}", "{$cache_themes_dir}/{$filename_min}");
-		}
-	}
+	copy_file_to_cdn(MYBB_ROOT . "{$theme_directory}/{$filename}");
+	copy_file_to_cdn(MYBB_ROOT . "{$theme_directory}/{$filename_min}");
 
 	return "{$theme_directory}/{$filename}";
 }
@@ -634,9 +615,9 @@ function build_new_theme($name, $properties=null, $parent=1)
 	}
 	if(!empty($stylesheets))
 	{
-		$updated_theme['stylesheets'] = $db->escape_string(serialize($stylesheets));
+		$updated_theme['stylesheets'] = $db->escape_string(my_serialize($stylesheets));
 	}
-	$updated_theme['properties'] = $db->escape_string(serialize($properties));
+	$updated_theme['properties'] = $db->escape_string(my_serialize($properties));
 
 	if(count($updated_theme) > 0)
 	{
@@ -922,7 +903,7 @@ function copy_stylesheet_to_theme($stylesheet, $tid)
 
 function update_theme_stylesheet_list($tid, $theme = false, $update_disporders = true)
 {
-	global $db, $cache;
+	global $mybb, $db, $cache, $plugins;
 
 	$stylesheets = array();
 
@@ -984,6 +965,11 @@ function update_theme_stylesheet_list($tid, $theme = false, $update_disporders =
 				}
 			}
 		}
+		
+		if(is_object($plugins))
+		{
+			$plugins->run_hooks('update_theme_stylesheet_list_set_css_url', $css_url);
+		}
 
 		$attachedto = $stylesheet['attachedto'];
 		if(!$attachedto)
@@ -1021,7 +1007,7 @@ function update_theme_stylesheet_list($tid, $theme = false, $update_disporders =
 
 	// Now we have our list of built stylesheets, save them
 	$updated_theme = array(
-		"stylesheets" => $db->escape_string(serialize($theme_stylesheets))
+		"stylesheets" => $db->escape_string(my_serialize($theme_stylesheets))
 	);
 
 	// Do we have a theme present? If so, update the stylesheet display orders
@@ -1072,7 +1058,7 @@ function update_theme_stylesheet_list($tid, $theme = false, $update_disporders =
 
 		asort($orders);
 		$properties['disporder'] = $orders;
-		$updated_theme['properties'] = $db->escape_string(serialize($properties));
+		$updated_theme['properties'] = $db->escape_string(my_serialize($properties));
 	}
 
 	$db->update_query("themes", $updated_theme, "tid = '{$tid}'");
