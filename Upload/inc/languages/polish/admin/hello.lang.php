@@ -11,10 +11,10 @@ $l['hello_desc'] = 'Przykładowy plugin, który pozwala na tworzenie wiadomości
 $l['setting_group_hello'] = 'Hello World!';
 $l['setting_group_hello_desc'] = 'Ustawienia wtyczki Hello World!';
 
-$l['setting_hello_display1'] = 'Wyœwietlanie wiadomości na stronie głównej';
+$l['setting_hello_display1'] = 'Wyświetlanie wiadomości na stronie głównej';
 $l['setting_hello_display1_desc'] = 'Ustaw na \'nie\', jeśli nie chcesz, aby wiadomość była wyświetlana na stronie głównej.';
 
-$l['setting_hello_display2'] = 'Wyœwietlanie wiadomości w postach';
+$l['setting_hello_display2'] = 'Wyświetlanie wiadomości w postach';
 $l['setting_hello_display2_desc'] = 'Ustaw na \'nie\', jeśli nie chcesz, aby wiadomość była wyświetlana pod każdym postem.';
 
 $l['hello_uninstall'] = 'Deinstalacja Hello World!';
