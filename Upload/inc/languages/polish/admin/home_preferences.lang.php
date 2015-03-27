@@ -24,8 +24,8 @@ $l['use_codemirror_desc'] = "Zaznacz \"Nie\", by wyłączyć Code Mirror (narzę
 $l['success_preferences_updated'] = "Ustawienia zostały zaktualizowane.";
 
 $l['my2fa'] = "Weryfikacja dwuetapowa";
-$l['use_2fa_desc'] = "Weryfikacja dwuetapowa to opcja która pozwala chronić Twoje konto administratora. Po jej włączeniu zobaczysz poniżej kod QR, który należy zeskanować aplikacją <a href=\"http://docs.mybb.com/1.8/administration/security/2fa/\" target=\"_blank\">taką jak Google Authenticator lub Authy</a>. Te aplikacje generują kod który będziesz musiał podać podczas każdego logowania do panelu administratora.";
-$l['my2fa_qr'] = "Kody weryfikacji dwuetapowej";
-$l['recovery_codes_desc'] = "Zobacz swoje <a href=\"index.php?module=home-preferences&amp;action=recovery_codes\">kody bezpieczeństwa</a>.";
-$l['recovery_codes'] = "Kody bezpieczeństwa";
-$l['recovery_codes_warning'] = "<b>Notatka:</b> kody będą regenerowane za każdym razem kiedy odwiedzisz tę stronę i mogą być użyte tylko raz.";
+$l['use_2fa_desc'] = "Weryfikacja dwuetapowa to metoda zabezpieczenia Twojego konta administratora. Po jej włączeniu zobaczysz poniżej kod QR, który musisz zeskanować korzystając z aplikacji takiej jak <a href=\"http://docs.mybb.com/1.8/administration/security/2fa/\" target=\"_blank\">Google Authenticator czy Authy</a>. Aplikacja ta wygeneruje kod, którego wpisanie będzie wymagane każdorazowo podczas logowania do panelu administratora.";
+$l['my2fa_qr'] = "Kod weryfikacji dwuetapowej";
+$l['recovery_codes_desc'] = "Zobacz swoje <a href=\"index.php?module=home-preferences&amp;action=recovery_codes\">kody zapasowe</a>.";
+$l['recovery_codes'] = "Kody zapasowe";
+$l['recovery_codes_warning'] = "<b>Uwaga:</b> kody zapasowe są regenerowane przy każdej wizycie na tej stronie i mogą być użyte jedynie raz.";
