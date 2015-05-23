@@ -9,7 +9,7 @@
 $l['none'] = 'brak';
 $l['not_installed'] = 'nie zainstalowano';
 $l['installed'] = 'zainstalowano';
-$l['not_writable'] = 'nie zapisywalny';
+$l['not_writable'] = 'niezapisywalny';
 $l['writable'] = 'zapisywalny';
 $l['done'] = ' gotowe';
 $l['next'] = 'Dalej';
