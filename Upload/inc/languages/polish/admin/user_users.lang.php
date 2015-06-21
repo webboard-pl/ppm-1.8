@@ -184,6 +184,8 @@ $l['recieve_pms_from_others'] = "Otrzymuj prywatne wiadomości od innych użytko
 $l['recieve_pms_from_buddy'] = "Otrzymuj prywatne wiadomości tylko od osób z listy znajomych";
 $l['alert_new_pms'] = "Informuj o nowych prywatnych wiadomościach";
 $l['email_notify_new_pms'] = "Informuj e-mailem o nowych prywatnych wiadomościach";
+$l['buddy_requests_pm'] = "Wysyłaj powiadomienia PW kiedy ktoś będzie chciał dołączyć do Twojej listy znajomcyh.";
+$l['buddy_requests_auto'] = "Automatycznie akceptuj zaproszenia do listy znajomych (jeżeli powyższe pole będzie zaznaczone, będziesz otrzymywał powiadomienia PW o nowych osobach na Twojej liście znajomych)";
 $l['default_thread_subscription_mode'] = "Domyślny sposób subskrypcji tematów";
 $l['do_not_subscribe'] = "Nie subskrybuj";
 $l['no_email_notification'] = "Bez powiadamiania e-mailem";
@@ -237,7 +239,7 @@ $l['suspend_sig_box'] = "Wyłącz sygnaturę tego użytkownika";
 $l['suspend_sig_perm'] = "<small>Wyłączona na zawsze.</small>";
 $l['suspend_sig_info'] = "Jeżeli sygnatura użytkownika zostanie wyłączona, użytkownik nie będzie mógł jej edytować ani nie będzie ona pokazywana pod postami i w profilu użytkownika";
 $l['suspend_sig_extend'] = "<small>Podaj nowy czas, aby zmienić datę wyłączenia ograniczenia bądź odznacz tę opcję aby teraz wyłączyć ograniczenie.</small>";
-$l['suspend_expire_info'] = "<small>Wygasa {1}</small>";
+$l['suspend_expire_info'] = "<small>Pozostało: <span style=\"color: {2};\">{1}</span></small>";
 $l['suspend_never_expire'] = "<small>Wyłączenie sygnatury użytkownika {1} nie zostanie nigdy wyłączone.</small>";
 $l['suspend_sig_error'] = "Podano nieprawidłowy okres wyłączenia sygnatury użytkownika. Podaj prawidłową datę.";
 
@@ -245,13 +247,13 @@ $l['moderate_posts'] = "Moderuj posty użytkownika";
 $l['moderate_posts_info'] = "Moderuj nowe posty użytkownika {1}.";
 $l['moderate_for'] = "Moderuj przez:";
 $l['moderated_perm'] = "<p><small>Posty tego użytkownika będą cały czas moderowane.<br />Podaj nowy czas, aby zmienić datę wyłączenia ograniczenia bądź odznacz tę opcję aby teraz wyłączyć ograniczenie.</small></p>";
-$l['moderate_length'] = "<p><small>Posty będą moderowane do {1}.<br />Podaj nowy czas, aby zmienić datę wyłączenia ograniczenia bądź odznacz tę opcję aby teraz wyłączyć ograniczenie.</small></p>";
+$l['moderate_length'] = "<p><small>Pozostały czas moderacji: <span style=\"color: {2};\">{1}</span>.<br />Podaj nowy czas, aby zmienić datę wyłączenia ograniczenia bądź odznacz tę opcję aby teraz wyłączyć ograniczenie.</small></p>";
 
 $l['suspend_posts'] = "Odbierz możliwość pisania";
 $l['suspend_posts_info'] = "Odbierz użytkownikowi {1} możliwość pisania postów.";
 $l['suspend_for'] = "Odbierz na:";
 $l['suspended_perm'] = "<p><small>Użytkownik na zawsze nie może pisać postów.<br />Podaj nowy czas, aby zmienić datę wyłączenia ograniczenia bądź odznacz tę opcję aby teraz wyłączyć ograniczenie.</small></p>";
-$l['suspend_length'] = "<p><small>Użytkownik nie będzie mógł pisać postów do {1}.<br />Podaj nowy czas, aby zmienić datę wyłączenia ograniczenia bądź odznacz tę opcję aby teraz wyłączyć ograniczenie.</small></p>";
+$l['suspend_length'] = "<p><small>Pozostały czas braku możliwości pisania: <span style=\"color: {2};\">{1}</span>.<br />Podaj nowy czas, aby zmienić datę wyłączenia ograniczenia bądź odznacz tę opcję aby teraz wyłączyć ograniczenie.</small></p>";
 
 $l['suspendsignature_error'] = "Wybrano wyłączenie użytkownikowi sygnatury, ale nie podano poprawnego okresu czasowego. Podaj poprawny czas, aby zmienić datę wyłączenia ograniczenia bądź odznacz tę opcję aby teraz wyłączyć ograniczenie.";
 $l['moderateposting_error'] = "Wybrano włączenie moderowania postów użytkownika, ale nie podano poprawnego okresu czasowego. Podaj poprawny czas, aby zmienić datę wyłączenia ograniczenia bądź odznacz tę opcję aby teraz wyłączyć ograniczenie.";
