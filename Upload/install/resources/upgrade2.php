@@ -26,7 +26,7 @@ function upgrade2_dbchanges()
 	$output->print_header("Dokonywanie zmian w bazie danych");
 
 	$contents .= "<p>Trwa dokonywanie wymaganych zmian w bazie danych...";
-	
+
 	$db->drop_table("badwords");
 	$db->write_query("CREATE TABLE ".TABLE_PREFIX."badwords (
 	  bid smallint(6) NOT NULL auto_increment,
@@ -35,21 +35,21 @@ function upgrade2_dbchanges()
 	  PRIMARY KEY(bid)
 	);");
 
-	if($db->field_exists("icon", TABLE_PREFIX."attachtypes"))
+	if($db->field_exists("icon", "attachtypes"))
 	{
 		$db->write_query("ALTER TABLE ".TABLE_PREFIX."attachtypes DROP icon;");
 	}
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."attachtypes ADD icon varchar(100) NOT NULL;");
-	
+
 	$db->delete_query("attachtypes");
 
-	$db->write_query("INSERT INTO ".TABLE_PREFIX."attachtypes (atid, name, mimetype, extension, maxsize, icon) VALUES (1, 'Archiwum ZIP', 'application/zip', 'zip', 1024, 'images/attachtypes/zip.gif');");
-	$db->write_query("INSERT INTO ".TABLE_PREFIX."attachtypes (atid, name, mimetype, extension, maxsize, icon) VALUES (2, 'Obraz JPEG', 'image/jpeg', 'jpg', 500, 'images/attachtypes/image.gif');");
-	$db->write_query("INSERT INTO ".TABLE_PREFIX."attachtypes (atid, name, mimetype, extension, maxsize, icon) VALUES (3, 'Dokument tekstowy', 'text/plain', 'txt', 200, 'images/attachtypes/txt.gif');");
-	$db->write_query("INSERT INTO ".TABLE_PREFIX."attachtypes (atid, name, mimetype, extension, maxsize, icon) VALUES (4, 'Obraz GIF', 'image/gif', 'gif', 500, 'images/attachtypes/image.gif');");
-	$db->write_query("INSERT INTO ".TABLE_PREFIX."attachtypes (atid, name, mimetype, extension, maxsize, icon) VALUES (6, 'Plik PHP', 'application/octet-stream', 'php', 500, 'images/attachtypes/php.gif');");
-	$db->write_query("INSERT INTO ".TABLE_PREFIX."attachtypes (atid, name, mimetype, extension, maxsize, icon) VALUES (7, 'Obraz PNG', 'image/png', 'png', 500, 'images/attachtypes/image.gif');");
-	$db->write_query("INSERT INTO ".TABLE_PREFIX."attachtypes (atid, name, mimetype, extension, maxsize, icon) VALUES (8, 'Dokument Microsoft Word', 'application/msword', 'doc', 1024, 'images/attachtypes/doc.gif');");
+	$db->write_query("INSERT INTO ".TABLE_PREFIX."attachtypes (atid, name, mimetype, extension, maxsize, icon) VALUES (1, 'Zip File', 'application/zip', 'zip', 1024, 'images/attachtypes/zip.gif');");
+	$db->write_query("INSERT INTO ".TABLE_PREFIX."attachtypes (atid, name, mimetype, extension, maxsize, icon) VALUES (2, 'JPEG Image', 'image/jpeg', 'jpg', 500, 'images/attachtypes/image.gif');");
+	$db->write_query("INSERT INTO ".TABLE_PREFIX."attachtypes (atid, name, mimetype, extension, maxsize, icon) VALUES (3, 'Text Document', 'text/plain', 'txt', 200, 'images/attachtypes/txt.gif');");
+	$db->write_query("INSERT INTO ".TABLE_PREFIX."attachtypes (atid, name, mimetype, extension, maxsize, icon) VALUES (4, 'GIF Image', 'image/gif', 'gif', 500, 'images/attachtypes/image.gif');");
+	$db->write_query("INSERT INTO ".TABLE_PREFIX."attachtypes (atid, name, mimetype, extension, maxsize, icon) VALUES (6, 'PHP File', 'application/octet-stream', 'php', 500, 'images/attachtypes/php.gif');");
+	$db->write_query("INSERT INTO ".TABLE_PREFIX."attachtypes (atid, name, mimetype, extension, maxsize, icon) VALUES (7, 'PNG Image', 'image/png', 'png', 500, 'images/attachtypes/image.gif');");
+	$db->write_query("INSERT INTO ".TABLE_PREFIX."attachtypes (atid, name, mimetype, extension, maxsize, icon) VALUES (8, 'Microsoft Word Document', 'application/msword', 'doc', 1024, 'images/attachtypes/doc.gif');");
 	$db->write_query("INSERT INTO ".TABLE_PREFIX."attachtypes (atid, name, mimetype, extension, maxsize, icon) VALUES (9, '', 'application/octet-stream', 'htm', 100, 'images/attachtypes/html.gif');");
 	$db->write_query("INSERT INTO ".TABLE_PREFIX."attachtypes (atid, name, mimetype, extension, maxsize, icon) VALUES (10, '', 'application/octet-stream', 'html', 100, 'images/attachtypes/html.gif');");
 	$db->write_query("INSERT INTO ".TABLE_PREFIX."attachtypes (atid, name, mimetype, extension, maxsize, icon) VALUES (11, '', 'image/jpeg', 'jpeg', 500, 'images/attachtypes/image.gif');");
@@ -59,35 +59,35 @@ function upgrade2_dbchanges()
 	$db->write_query("INSERT INTO ".TABLE_PREFIX."attachtypes (atid, name, mimetype, extension, maxsize, icon) VALUES (15, '', 'application/pdf', 'pdf', 2048, 'images/attachtypes/pdf.gif');");
 	$db->write_query("INSERT INTO ".TABLE_PREFIX."attachtypes (atid, name, mimetype, extension, maxsize, icon) VALUES (16, '', 'image/bmp', 'bmp', 500, 'images/attachtypes/image.gif');");
 
-	if($db->field_exists("outerwidth", TABLE_PREFIX."themes"))
+	if($db->field_exists("outerwidth", "themes"))
 	{
 		$db->write_query("ALTER TABLE ".TABLE_PREFIX."themes DROP outerwidth;");
 	}
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."themes ADD outerwidth varchar(15) NOT NULL;");
-	
-	if($db->field_exists("icon", TABLE_PREFIX."themes"))
+
+	if($db->field_exists("icon", "themes"))
 	{
 		$db->write_query("ALTER TABLE ".TABLE_PREFIX."themes DROP icon;");
 	}
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."themes ADD outercolor varchar(15) NOT NULL;");
-	
+
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."themes CHANGE body bodybgcolor varchar(15) NOT NULL;");
-	
-	if($db->field_exists("bodybgimage", TABLE_PREFIX."themes"))
+
+	if($db->field_exists("bodybgimage", "themes"))
 	{
 		$db->write_query("ALTER TABLE ".TABLE_PREFIX."themes DROP bodybgimage;");
 	}
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."themes ADD bodybgimage varchar(100) NOT NULL default '' AFTER bodybgcolor;");
-	
-	if($db->field_exists("bodybgimageattributes", TABLE_PREFIX."themes"))
+
+	if($db->field_exists("bodybgimageattributes", "themes"))
 	{
 		$db->write_query("ALTER TABLE ".TABLE_PREFIX."themes DROP bodydbimageattributes;");
 	}
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."themes ADD bodybgimageattributes varchar(100) NOT NULL default '' AFTER bodybgimage;");
-	
-	
+
+
 	$db->write_query("UPDATE ".TABLE_PREFIX."themes SET outerwidth='0', bodybgcolor='#e3e3e3', bodybgimage='images/Light/logo_bg.png', bodybgimageattributes='repeat-x'");
-	
+
 	$db->drop_table("regimages");
 	$db->write_query("CREATE TABLE ".TABLE_PREFIX."regimages (
 	  imagehash varchar(32) NOT NULL,
@@ -97,38 +97,38 @@ function upgrade2_dbchanges()
 
 	$db->write_query("UPDATE ".TABLE_PREFIX."adminoptions SET cpstyle=''");
 
-	if($db->field_exists("language", TABLE_PREFIX."users"))
+	if($db->field_exists("language", "users"))
 	{
 		$db->write_query("ALTER TABLE ".TABLE_PREFIX."users DROP language;");
 	}
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."users ADD language varchar(50) NOT NULL;");
-	
-	if($db->field_exists("timeonline", TABLE_PREFIX."users"))
+
+	if($db->field_exists("timeonline", "users"))
 	{
 		$db->write_query("ALTER TABLE ".TABLE_PREFIX."users DROP timeonline;");
 	}
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."users ADD timeonline bigint(30) NOT NULL default '0';");
-	
-	if($db->field_exists("showcodebuttons", TABLE_PREFIX."users"))
+
+	if($db->field_exists("showcodebuttons", "users"))
 	{
 		$db->write_query("ALTER TABLE ".TABLE_PREFIX."user DROP showcodebuttons;");
 	}
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."users ADD showcodebuttons int(1) NOT NULL default '1';");
-	
+
 	$db->write_query("UPDATE ".TABLE_PREFIX."users SET language='english', showcodebuttons=1");
 
-	if($db->field_exists("oldgroup", TABLE_PREFIX."awaitingactivation"))
+	if($db->field_exists("oldgroup", "awaitingactivation"))
 	{
 		$db->write_query("ALTER TABLE ".TABLE_PREFIX."awaitingactivation DROP oldgroup;");
 	}
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."awaitingactivation ADD oldgroup bigint(30) NOT NULL;");
-	
-	if($db->field_exists("misc", TABLE_PREFIX."awaitingactivation"))
+
+	if($db->field_exists("misc", "awaitingactivation"))
 	{
 		$db->write_query("ALTER TABLE ".TABLE_PREFIX."awaitingactivation DROP misc;");
 	}
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."awaitingactivation ADD misc varchar(255) NOT NULL;");
-	
+
 	$db->write_query("DELETE FROM ".TABLE_PREFIX."awaitingactivation WHERE type='e'");
 
 	$db->drop_table("settings");
@@ -286,5 +286,4 @@ function upgrade2_dbchanges2()
 
 	$output->print_contents("$contents<p>Naciśnij przycisk Dalej, aby kontynuować proces aktualizacji.</p>");
 	$output->print_footer("2_done");
-}
 }
