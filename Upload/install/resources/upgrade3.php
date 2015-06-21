@@ -56,7 +56,7 @@ function upgrade3_dbchanges()
 			if(!is_writable("../uploads/avatars/"))
 			{
 				$errors = "<p>Nie można zapisywać do katalogu /uploads/avatars. Sprawdź uprawnienia dla tego katalogu i spróbuj ponownie (CHMOD 766 lub 777).";
-			}		
+			}
 		}
 	}
 
@@ -110,45 +110,45 @@ function upgrade3_convertattachments()
 
 	$contents .= "<p>Konwersja załączników z $lower do $upper (Łącznie: ".$cnt['attachcount'].")</p>";
 	echo "<p>Konwersja załączników z $lower do $upper (Łącznie: ".$cnt['attachcount'].")</p>";
-	
-	if($db->field_exists("uid", TABLE_PREFIX."attachments"))
+
+	if($db->field_exists("uid", "attachments"))
 	{
 		$db->write_query("ALTER TABLE ".TABLE_PREFIX."attachments DROP uid;");
 	}
 	// Add uid column
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."attachments ADD uid smallint(6) NOT NULL AFTER posthash;");
-	
 
-	if($db->field_exists("thumbnail", TABLE_PREFIX."attachments"))
+
+	if($db->field_exists("thumbnail", "attachments"))
 	{
 		// Drop thumbnail column
 		$db->write_query("ALTER TABLE ".TABLE_PREFIX."attachments DROP thumbnail");
 	}
 
-	if($db->field_exists("thumbnail", TABLE_PREFIX."attachments"))
+	if($db->field_exists("thumbnail", "attachments"))
 	{
 		$db->write_query("ALTER TABLE ".TABLE_PREFIX."attachments DROP thumbnail;");
 	}
 	// Add thumbnail column
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."attachments ADD thumbnail varchar(120) NOT NULL;");
 
-	if($db->field_exists("attachname", TABLE_PREFIX."attachments"))
+	if($db->field_exists("attachname", "attachments"))
 	{
 		$db->write_query("ALTER TABLE ".TABLE_PREFIX."attachments DROP attachname;");
 	}
 	// Add attachname column
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."attachments ADD attachname varchar(120) NOT NULL AFTER filesize;");
-	
-	if(!$db->field_exists("donecon", TABLE_PREFIX."attachments"))
+
+	if(!$db->field_exists("donecon", "attachments"))
 	{
 		// Add temporary column
 		$db->write_query("ALTER TABLE ".TABLE_PREFIX."attachments ADD donecon smallint(1) NOT NULL;");
 	}
 
 	$query = $db->query("
-		SELECT a.*, p.uid AS puid, p.dateline 
-		FROM ".TABLE_PREFIX."attachments a 
-		LEFT JOIN ".TABLE_PREFIX."posts p ON (p.pid=a.pid) 
+		SELECT a.*, p.uid AS puid, p.dateline
+		FROM ".TABLE_PREFIX."attachments a
+		LEFT JOIN ".TABLE_PREFIX."posts p ON (p.pid=a.pid)
 		WHERE a.donecon != '1'
 		ORDER BY a.aid ASC LIMIT {$app}
 	");
@@ -178,30 +178,30 @@ function upgrade3_convertattachments()
 		$db->write_query("UPDATE ".TABLE_PREFIX."attachments SET attachname='".$filename."', donecon='1', uid='".$attachment['puid']."', thumbnail='".$thumbnail['filename']."' WHERE aid='".$attachment['aid']."'");
 		unset($thumbnail);
 	}
-	
+
 	echo "<p>Zakończono.</p>";
 	$query = $db->simple_select("attachments", "COUNT(aid) AS attachrem", "donecon != '1'");
 	$cnt = $db->fetch_array($query);
-	
+
 	if($cnt['attachrem'] != 0)
 	{
 		$nextact = "3_convertattachments";
 		$startat = $startat+$app;
-		$contents .= "<p><input type=\"hidden\" name=\"attachmentspage\" value=\"$app\" /><input type=\"hidden\" name=\"attachmentstart\" value=\"$startat\" />Done. Click Next to move on to the next set of attachments.</p>";
+		$contents .= "<p><input type=\"hidden\" name=\"attachmentspage\" value=\"$app\" /><input type=\"hidden\" name=\"attachmentstart\" value=\"$startat\" />Zakończono. Kliknij dalej, aby przejść do kolejnej paczki załączników.</p>";
 	}
 	else
 	{
-		if($db->field_exists("donecon", TABLE_PREFIX."attachments"))
+		if($db->field_exists("donecon", "attachments"))
 		{
 			$db->write_query("ALTER TABLE ".TABLE_PREFIX."attachments DROP donecon");
 		}
-		
-		if($db->field_exists("filedata", TABLE_PREFIX."attachments"))
+
+		if($db->field_exists("filedata", "attachments"))
 		{
 			$db->write_query("ALTER TABLE ".TABLE_PREFIX."attachments DROP filedata");
 		}
-		
-		if($db->field_exists("thumbnailsm", TABLE_PREFIX."attachments"))
+
+		if($db->field_exists("thumbnailsm", "attachments"))
 		{
 			$db->write_query("ALTER TABLE ".TABLE_PREFIX."attachments DROP thumbnailsm");
 		}
@@ -251,12 +251,12 @@ function upgrade3_convertavatars()
 	$contents .= "<p>Konwersja awatarów z $lower do $upper (Łącznie ".$cnt['avatarcount'].")</p>";
 
 	// Add temporary column
-	if(!$db->field_exists("donecon", TABLE_PREFIX."avatars"))
+	if(!$db->field_exists("donecon", "avatars"))
 	{
 		$db->write_query("ALTER TABLE ".TABLE_PREFIX."avatars ADD donecon smallint(1) NOT NULL;");
 	}
-	
-	if($db->field_exists("avatartype", TABLE_PREFIX."attachments"))
+
+	if($db->field_exists("avatartype", "attachments"))
 	{
 		$db->write_query("ALTER TABLE ".TABLE_PREFIX."attachments DROP avatartype;");
 	}
@@ -281,7 +281,7 @@ function upgrade3_convertavatars()
 				$ext = "gif";
 				break;
 		}
-		
+
 		if($ext)
 		{
 			$filename = "avatar_".$avatar['uid'].".".$ext;
@@ -296,11 +296,11 @@ function upgrade3_convertavatars()
 			$db->write_query("UPDATE ".TABLE_PREFIX."users SET avatar='uploads/avatars/$filename', avatartype='upload' WHERE uid='".$avatar['uid']."'");
 		}
 	}
-	
+
 	echo "<p>Zakończono.</p>";
 	$query = $db->simple_select("avatars", "COUNT(uid) AS avatarsrem", "donecon!='1'");
 	$cnt = $db->fetch_array($query);
-	
+
 	if($cnt['avatarsrem'] != 0)
 	{
 		$nextact = "3_convertavatars";
@@ -325,98 +325,98 @@ function upgrade3_dbchanges2()
 
 	$contents = "<p>Trwa dokonywanie wymaganych zmian w bazie danych.</p>";
 
-	if($db->field_exists("additionalgroups", TABLE_PREFIX."users"))
+	if($db->field_exists("additionalgroups", "users"))
 	{
 		$db->write_query("ALTER TABLE ".TABLE_PREFIX."users DROP additionalgroups;");
 	}
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."users ADD additionalgroups varchar(200) NOT NULL default '' AFTER usergroup;");
-	
-	if($db->field_exists("displaygroup", TABLE_PREFIX."users"))
+
+	if($db->field_exists("displaygroup", "users"))
 	{
 		$db->write_query("ALTER TABLE ".TABLE_PREFIX."users DROP displaygroup;");
 	}
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."users ADD displaygroup smallint(6) NOT NULL default '0' AFTER additionalgroups;");
-	
-	if($db->field_exists("candisplaygroup", TABLE_PREFIX."usergroups"))
+
+	if($db->field_exists("candisplaygroup", "usergroups"))
 	{
-		$db->write_query("ALTER TABLE ".TABLE_PREFIX."users DROP candisplaygroup;");
+		$db->write_query("ALTER TABLE ".TABLE_PREFIX."usergroups DROP candisplaygroup;");
 	}
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."usergroups ADD candisplaygroup varchar(3) NOT NULL;");
-	
-	if(!$db->field_exists("reason", TABLE_PREFIX."banned"))
+
+	if($db->field_exists("reason", "banned"))
 	{
 		$db->write_query("ALTER TABLE ".TABLE_PREFIX."banned DROP reason;");
 	}
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."banned ADD reason varchar(200) NOT NULL");
-	
-	if($db->field_exists("rulestype", TABLE_PREFIX."forums"))
+
+	if($db->field_exists("rulestype", "forums"))
 	{
 		$db->write_query("ALTER TABLE ".TABLE_PREFIX."forums DROP rulestype;");
 	}
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."forums ADD rulestype smallint(1) NOT NULL;");
-	
-	if($db->field_exists("rulestitle", TABLE_PREFIX."forums"))
+
+	if($db->field_exists("rulestitle", "forums"))
 	{
 		$db->write_query("ALTER TABLE ".TABLE_PREFIX."forums DROP rulestitle;");
 	}
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."forums ADD rulestitle varchar(200) NOT NULL;");
-	
-	if($db->field_exists("rules", TABLE_PREFIX."forums"))
+
+	if($db->field_exists("rules", "forums"))
 	{
 		$db->write_query("ALTER TABLE ".TABLE_PREFIX."forums DROP rules;");
 	}
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."forums ADD rules text NOT NULL;");
-	
-	if($db->field_exists("usetranslation", TABLE_PREFIX."helpdocs"))
+
+	if($db->field_exists("usetranslation", "helpdocs"))
 	{
 		$db->write_query("ALTER TABLE ".TABLE_PREFIX."forums DROP helpdocs;");
 	}
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."helpdocs ADD usetranslation CHAR( 3 ) NOT NULL AFTER document;");
-	
-	if($db->field_exists("enabled", TABLE_PREFIX."helpdocs"))
+
+	if($db->field_exists("enabled", "helpdocs"))
 	{
 		$db->write_query("ALTER TABLE ".TABLE_PREFIX."helpdocs DROP enabled;");
 	}
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."helpdocs ADD enabled CHAR( 3 ) NOT NULL AFTER usetranslation;");
-	
+
 		/*
-	
+
 		This will break the upgrade for users who have customised help documents
-		
+
 		$db->write_query("UPDATE ".TABLE_PREFIX."helpdocs SET hid='6' WHERE hid='7'");
 		$db->write_query("UPDATE ".TABLE_PREFIX."helpdocs SET hid='7' WHERE hid='8'");*/
 
-	if($db->field_exists("usetranslation", TABLE_PREFIX."helpsections"))
+	if($db->field_exists("usetranslation", "helpsections"))
 	{
 		$db->write_query("ALTER TABLE ".TABLE_PREFIX."helpsections DROP usetranslation;");
 	}
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."helpsections ADD usetranslation CHAR( 3 ) NOT NULL AFTER description;");
-	
-	if($db->field_exists("enabled", TABLE_PREFIX."helpsections"))
+
+	if($db->field_exists("enabled", "helpsections"))
 	{
 		$db->write_query("ALTER TABLE ".TABLE_PREFIX."helpsections DROP enabled;");
 	}
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."helpsections ADD enabled CHAR( 3 ) NOT NULL AFTER usetranslation;");
-	
-	if($db->field_exists("firstpost", TABLE_PREFIX."threads"))
+
+	if($db->field_exists("firstpost", "threads"))
 	{
 		$db->write_query("ALTER TABLE ".TABLE_PREFIX."threads DROP firstpost;");
-	}	
+	}
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."threads ADD firstpost int unsigned NOT NULL default '0' AFTER dateline;");
-	
-	if($db->field_exists("attachquota", TABLE_PREFIX."usergroups"))
+
+	if($db->field_exists("attachquota", "usergroups"))
 	{
 		$db->write_query("ALTER TABLE ".TABLE_PREFIX."usergroups DROP attachquota;");
 	}
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."usergroups ADD attachquota bigint(30) NOT NULL default '0';");
-	
-	if($db->field_exists("cancustomtitle", TABLE_PREFIX."usergroups"))
+
+	if($db->field_exists("cancustomtitle", "usergroups"))
 	{
 		$db->write_query("ALTER TABLE ".TABLE_PREFIX."usergroups DROP cancustomtitle;");
 	}
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."usergroups ADD cancustomtitle varchar(3) NOT NULL;");
-	
-	
+
+
 	$db->drop_table("groupleaders");
 	$db->write_query("CREATE TABLE ".TABLE_PREFIX."groupleaders (
 	 lid smallint(6) NOT NULL auto_increment,
@@ -452,26 +452,26 @@ function upgrade3_dbchanges2()
 	  KEY location2 (location2)
 	);");
 
-	if($db->field_exists("salt", TABLE_PREFIX."users"))
+	if($db->field_exists("salt", "users"))
 	{
 		$db->write_query("ALTER TABLE ".TABLE_PREFIX."users DROP salt;");
 	}
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."users ADD salt varchar(10) NOT NULL AFTER password;");
-	
-	
-	if($db->field_exists("loginkey", TABLE_PREFIX."users"))
+
+
+	if($db->field_exists("loginkey", "users"))
 	{
 		$db->write_query("ALTER TABLE ".TABLE_PREFIX."users DROP loginkey;");
 	}
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."users ADD loginkey varchar(50) NOT NULL AFTER salt;");
-	
 
-	if($db->field_exists("pmnotify", TABLE_PREFIX."users"))
+
+	if($db->field_exists("pmnotify", "users"))
 	{
 		$db->write_query("ALTER TABLE ".TABLE_PREFIX."users DROP pmnotify;");
-	}	
+	}
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."users ADD pmnotify varchar(3) NOT NULL AFTER pmpopup;");
-	
+
 	$collation = $db->build_create_table_collation();
 
 	$db->drop_table("settinggroups");
@@ -634,7 +634,7 @@ function upgrade3_dbchanges2()
 	$db->write_query("INSERT INTO ".TABLE_PREFIX."settings (sid, name, title, description, optionscode, value, disporder, gid) VALUES (NULL, 'decpoint', 'Decimal Point', 'The decimal point you use in your region.', 'text', '.', 1, 1);");
 	$db->write_query("INSERT INTO ".TABLE_PREFIX."settings (sid, name, title, description, optionscode, value, disporder, gid) VALUES (NULL, 'thousandssep', 'Thousands Numeric Separator', 'The punctuation you want to use .  (for example, the setting \',\' with the number 1200 will give you a number such as 1,200)', 'text', ',', 1, 1);");
 	$db->write_query("INSERT INTO ".TABLE_PREFIX."settings (sid, name, title, description, optionscode, value, disporder, gid) VALUES (NULL, 'showvernum', 'Show Version Numbers', 'Allows you to turn off the public display of version numbers in MyBB.', 'onoff', 'off', 1, 1);");
-	
+
 	echo "Zakończono</p>";
 	$output->print_contents($contents);
 	$output->print_footer("3_dbchanges3");
@@ -649,7 +649,7 @@ function upgrade3_dbchanges3()
 	$contents = "<p>Trwa zmiana rozmiaru pól w bazie danych.</p>";
 
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."adminlog CHANGE uid uid int unsigned NOT NULL;");
-	
+
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."adminoptions CHANGE uid uid int(10) NOT NULL;");
 
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."announcements CHANGE aid aid int unsigned NOT NULL auto_increment;");
@@ -819,7 +819,7 @@ function upgrade3_dbchanges3()
 	$db->write_query("ALTER TABLE ".TABLE_PREFIX."usertitles CHANGE stars stars smallint(4) NOT NULL;");
 
 	echo "Zakończono</p>";
-	
+
 	$contents .= "<span style=\"color: red; font-weight: bold;\">OSTRZEŻENIE:</span> W następnym kroku zostaną usunięte wszystkie style i szablony zainstalowane na Twoim forum! Przed rozpoczęciem wykonaj ich kopię zapasową.</p>";
 	$output->print_contents($contents);
 	$output->print_footer("3_done");

@@ -1,14 +1,13 @@
 <?php
 /**
- * MyBB 1.8
- * Copyright 2014 MyBB Group, All Rights Reserved
- *
- * Website: http://www.mybb.com
- * License: http://www.mybb.com/about/license
- *
+ * MyBB 1.8 Polish Language Pack
+ * Copyright © 2008-2014 MyBBoard.pl Team
+ * See readme.html for copyright information. | Zapoznaj sie z plikiem czytaj_to.html.
+ * Autorzy: bryn, DamYan, gigi, matc, szulcu | Testerzy: hippie
  */
 
-$l['hello'] = 'Witaj świecie!';
+
+$l['hello'] = 'Hello World!';
 $l['hello_add'] = 'Dodaj';
 $l['hello_add_message'] = 'Dodaj wiadomość';
 $l['hello_empty'] = 'Nie znaleziono żadnych wiadomości.';

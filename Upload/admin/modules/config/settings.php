@@ -418,12 +418,14 @@ if($mybb->input['action'] == "add")
 		"onoff" => $lang->onoff,
 		"select" => $lang->select,
 		"forumselect" => $lang->forum_selection_box,
+		"forumselectsingle" => $lang->forum_selection_single,
 		"groupselect" => $lang->group_selection_box,
+		"groupselectsingle" => $lang->group_selection_single,
 		"radio" => $lang->radio,
 		"checkbox" => $lang->checkbox,
 		"language" => $lang->language_selection_box,
 		"adminlanguage" => $lang->adminlanguage,
-		"cpstyle" => $lang->cpstyle,
+		"cpstyle" => $lang->cpstyle
 		//"php" => $lang->php // Internal Use Only
 	);
 
@@ -634,12 +636,14 @@ if($mybb->input['action'] == "edit")
 		"onoff" => $lang->onoff,
 		"select" => $lang->select,
 		"forumselect" => $lang->forum_selection_box,
+		"forumselectsingle" => $lang->forum_selection_single,
 		"groupselect" => $lang->group_selection_box,
+		"groupselectsingle" => $lang->group_selection_single,
 		"radio" => $lang->radio,
 		"checkbox" => $lang->checkbox,
 		"language" => $lang->language_selection_box,
 		"adminlanguage" => $lang->adminlanguage,
-		"cpstyle" => $lang->cpstyle,
+		"cpstyle" => $lang->cpstyle
 		//"php" => $lang->php // Internal Use Only
 	);
 
@@ -1279,6 +1283,11 @@ if($mybb->input['action'] == "change")
 					checkAction('{$element_id}');
 				</script>";
 			}
+			else if($type[0] == "forumselectsingle")
+			{
+				$selected_value = (int)$setting['value']; // No need to check if empty, int will give 0
+				$setting_code = $form->generate_forum_select($element_name, $selected_value, array('id' => $element_id, 'main_option' => $lang->none));
+			}
 			else if($type[0] == "groupselect")
 			{
 				$selected_values = '';
@@ -1326,6 +1335,11 @@ if($mybb->input['action'] == "change")
 				<script type=\"text/javascript\">
 					checkAction('{$element_id}');
 				</script>";
+			}
+			else if($type[0] == "groupselectsingle")
+			{
+				$selected_value = (int)$setting['value']; // No need to check if empty, int will give 0
+				$setting_code = $form->generate_group_select($element_name, $selected_value, array('id' => $element_id, 'main_option' => $lang->none));
 			}
 			else
 			{
@@ -1614,7 +1628,7 @@ function print_setting_peekers()
 		'new Peeker($("#setting_captchaimage"), $("#row_setting_ayahpublisherkey, #row_setting_ayahscoringkey"), 3, false)',
 		'new Peeker($(".setting_contact"), $("#row_setting_contact_guests, #row_setting_contact_badwords, #row_setting_contact_maxsubjectlength, #row_setting_contact_minmessagelength, #row_setting_contact_maxmessagelength"), 1, true)',
 		'new Peeker($(".setting_enablepruning"), $("#row_setting_enableprunebyposts, #row_setting_pruneunactived, #row_setting_prunethreads"), 1, true)',
-		'new Peeker($(".setting_enableprunebyposts"), $("#row_setting_prunepostcount, #row_setting_dayspruneregistered"), 1, true)',
+		'new Peeker($(".setting_enableprunebyposts"), $("#row_setting_prunepostcount, #row_setting_dayspruneregistered, #row_setting_prunepostcountall"), 1, true)',
 		'new Peeker($(".setting_pruneunactived"), $("#row_setting_dayspruneunactivated"), 1, true)',
 		'new Peeker($(".setting_statsenabled"), $("#row_setting_statscachetime, #row_setting_statslimit, #row_setting_statstopreferrer"), 1, true)',
 		'new Peeker($(".setting_purgespammergroups_forums_groups_check"), $("#row_setting_purgespammerpostlimit, #row_setting_purgespammerbandelete, #row_setting_purgespammerapikey"), /^(?!none)/, true)',
