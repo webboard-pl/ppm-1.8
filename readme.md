@@ -1,4 +1,4 @@
-[![MyBB](https://raw.github.com/mybb/mybb/feature/images/logo.png "MyBB")](http://www.mybb.com "MyBB")
+[![MyBB PL](https://mybboard.pl/images/mybbpl/logo.png "MyBB PL")](https://www.mybboard.pl "MyBB PL")
 
 ## Polska Paczka MyBB 1.8
 Pełne tłumaczenie skryptu MyBB. Zawiera:
