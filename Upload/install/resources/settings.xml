@@ -704,8 +704,8 @@ none=Hide Errors and Warnings
 			<optionscode><![CDATA[radio
 horizontal=Display posts using the horizontal post layout
 classic=Display posts using the classic layout]]></optionscode>
-			<settingvalue><![CDATA[horizontal]]></settingvalue>
-			<isdefault>0</isdefault>
+			<settingvalue><![CDATA[classic]]></settingvalue>
+			<isdefault>1</isdefault>
 		</setting>
 		<setting name="postsperpage">
 			<title>Posts Per Page:</title>

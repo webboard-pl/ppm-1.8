@@ -2239,7 +2239,8 @@ function install_done()
 		'pmfolders' => '',
 		'notepad' => '',
 		'showredirect' => 1,
-		'usernotes' => ''
+		'usernotes' => '',
+		'classicpostbit' => '1'
 	);
 	$db->insert_query('users', $newuser);
 
