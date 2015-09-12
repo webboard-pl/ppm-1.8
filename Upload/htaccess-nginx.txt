@@ -1,3 +1,9 @@
+# Note: You are able to choose a different name in the Admin CP. If you've done that you need to change it here too
+location ~ /error.log 
+{ 
+    deny all; 
+}
+
 rewrite ^/dzial-([0-9]+).html$ /forumdisplay.php?fid=$1 last;
 rewrite ^/dzial-([0-9]+)-strona-([0-9]+).html$ /forumdisplay.php?fid=$1&page=$2 last;
 rewrite ^/watek-([0-9]+).html$ /showthread.php?tid=$1 last;

@@ -1,7 +1,7 @@
 <?php
 /**
  * MyBB 1.8 Polish Language Pack
- * Copyright © 2008-2011 MyBBoard.pl Team
+ * Copyright © 2008-2015 MyBBoard.pl Team
  * See readme.html for copyright information. | Zapoznaj sie z plikiem czytaj_to.html.
  * Autorzy: bryn, DamYan, gigi, matc, szulcu | Testerzy: hippie
  */
@@ -57,7 +57,7 @@ $l['report_lastpost'] = "Ostatnie zgłoszenie";
 $l['report_reason_other'] = "Inny powód";
 
 $l['report_info_post'] = "<a href=\"{1}\">Post</a> napisany przez {2}";
-$l['report_info_post_thread'] = "<br /><span class=\"smalltext\">W dziale <a href=\"{1}\">{2}</a></span>";
+$l['report_info_post_thread'] = "<br /><span class=\"smalltext\">W temacie: <a href=\"{1}\">{2}</a></span>";
 $l['report_info_profile'] = "Profil użytkownika {1}";
 $l['report_info_reputation'] = "<a href=\"{1}\">Punkt reputacji</a> od {2}";
 $l['report_info_rep_profile'] = "<br /><span class=\"smalltext\">Dla użytkownika {1}</span>";
