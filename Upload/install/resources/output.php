@@ -170,7 +170,7 @@ END;
 		$copyyear = date('Y');
 		echo <<<END
 			<div id="copyright">
-				MyBB &copy; 2002-$copyyear MyBB Group, Polskie tłumaczenie: <a href="http://www.mybboard.pl/" title="Polski Support MyBB" target="_blank">Polski Support MyBB</a> &copy; 2008-$copyyear.
+				MyBB &copy; 2002-$copyyear MyBB Group, Polskie tłumaczenie: <a href="http://www.mybboard.pl/" title="Polski Support MyBB" target="_blank">Polski Support MyBB</a> &copy; 2007-$copyyear.
 			</div>
 		</div>
 		</div>
