@@ -112,7 +112,7 @@
 		<title>Czyszczenie użytkowników</title>
 		<description><![CDATA[Codziennie automatycznie usuwa użytkowników według ustalonych wcześniej kryteriów.]]></description>
 		<file>userpruning</file>
-		<minute>*</minute>
+		<minute>0</minute>
 		<hour>2</hour>
 		<day>*</day>
 		<weekday>*</weekday>

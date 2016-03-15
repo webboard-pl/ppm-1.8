@@ -108,7 +108,7 @@ class DefaultPage
 
 		echo "	<script type=\"text/javascript\" src=\"../jscripts/jquery.js\"></script>\n";
 		echo "	<script type=\"text/javascript\" src=\"../jscripts/jquery.plugins.min.js\"></script>\n";
-		echo "	<script type=\"text/javascript\" src=\"../jscripts/general.js?ver=1806\"></script>\n";
+		echo "	<script type=\"text/javascript\" src=\"../jscripts/general.js?ver=1807\"></script>\n";
 		echo "	<script type=\"text/javascript\" src=\"./jscripts/admincp.js\"></script>\n";
 		echo "	<script type=\"text/javascript\" src=\"./jscripts/tabs.js\"></script>\n";
 
@@ -390,7 +390,7 @@ lang.saved = \"{$lang->saved}\";
 <meta name="copyright" content="Copyright {$copy_year} MyBB Group." />
 <link rel="stylesheet" href="./styles/{$cp_style}/login.css" type="text/css" />
 <script type="text/javascript" src="../jscripts/jquery.js"></script>
-<script type="text/javascript" src="../jscripts/general.js?ver=1806"></script>
+<script type="text/javascript" src="../jscripts/general.js?ver=1807"></script>
 <script type="text/javascript" src="./jscripts/admincp.js"></script>
 <script type="text/javascript">
 //<![CDATA[
@@ -522,7 +522,7 @@ EOF;
 <meta name="copyright" content="Copyright {$copy_year} MyBB Group." />
 <link rel="stylesheet" href="./styles/{$cp_style}/login.css" type="text/css" />
 <script type="text/javascript" src="../jscripts/jquery.js"></script>
-<script type="text/javascript" src="../jscripts/general.js?ver=1806"></script>
+<script type="text/javascript" src="../jscripts/general.js?ver=1807"></script>
 <script type="text/javascript" src="./jscripts/admincp.js"></script>
 <script type="text/javascript">
 //<![CDATA[
@@ -764,26 +764,6 @@ EOF;
 			$sidebar = new sideBarItem($title);
 			$sidebar->add_menu_items($items, $this->active_action);
 			$this->submenu .= $sidebar->get_markup();
-		}
-	}
-
-	/**
-	 * Switch between two different alternating background colours.
-	 *
-	 * @return string
-	 */
-	function get_alt_bg()
-	{
-		static $alt_bg;
-		if($alt_bg == "alt1")
-		{
-			$alt_bg = "alt2";
-			return "alt1";
-		}
-		else
-		{
-			$alt_bg = "alt1";
-			return $alt_bg;
 		}
 	}
 

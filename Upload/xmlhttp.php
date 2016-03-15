@@ -223,8 +223,8 @@ if($mybb->input['action'] == "get_users")
 {
 	$mybb->input['query'] = ltrim($mybb->get_input('query'));
 
-	// If the string is less than 3 characters, quit.
-	if(my_strlen($mybb->input['query']) < 3)
+	// If the string is less than 2 characters, quit.
+	if(my_strlen($mybb->input['query']) < 2)
 	{
 		exit;
 	}
@@ -373,6 +373,7 @@ else if($mybb->input['action'] == "edit_subject" && $mybb->request_method == "po
 		$updatepost = array(
 			"pid" => $post['pid'],
 			"tid" => $thread['tid'],
+			"prefix" => $thread['prefix'],
 			"subject" => $subject,
 			"edit_uid" => $mybb->user['uid']
 		);

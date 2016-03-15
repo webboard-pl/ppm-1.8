@@ -2151,7 +2151,7 @@ if($mybb->input['action'] == "do_avatar" && $mybb->request_method == "post")
 			$s = "?s={$maxheight}&r={$rating}&d=mm";
 
 			$updated_avatar = array(
-				"avatar" => "http://www.gravatar.com/avatar/{$email}{$s}.jpg",
+				"avatar" => "https://www.gravatar.com/avatar/{$email}{$s}",
 				"avatardimensions" => "{$maxheight}|{$maxheight}",
 				"avatartype" => "gravatar"
 			);
@@ -3221,15 +3221,18 @@ if($mybb->input['action'] == "usergroups")
 
 			$db->insert_query("joinrequests", $joinrequest);
 
-			foreach($groupleaders[$usergroup['gid']] as $leader)
+			if(array_key_exists($usergroup['gid'], $groupleaders))
 			{
-				// Load language
-				$lang->set_language($leader['language']);
-				$lang->load("messages");
-					
-				$subject = $lang->sprintf($lang->emailsubject_newjoinrequest, $mybb->settings['bbname']);
-				$message = $lang->sprintf($lang->email_groupleader_joinrequest, $leader['username'], $mybb->user['username'], $usergroup['title'], $mybb->settings['bbname'], $mybb->get_input('reason'), $mybb->settings['bburl'], $leader['gid']);
-				my_mail($leader['email'], $subject, $message);
+				foreach($groupleaders[$usergroup['gid']] as $leader)
+				{
+					// Load language
+					$lang->set_language($leader['language']);
+					$lang->load("messages");
+						
+					$subject = $lang->sprintf($lang->emailsubject_newjoinrequest, $mybb->settings['bbname']);
+					$message = $lang->sprintf($lang->email_groupleader_joinrequest, $leader['username'], $mybb->user['username'], $usergroup['title'], $mybb->settings['bbname'], $mybb->get_input('reason'), $mybb->settings['bburl'], $leader['gid']);
+					my_mail($leader['email'], $subject, $message);
+				}
 			}
 
 			// Load language
@@ -3309,7 +3312,7 @@ if($mybb->input['action'] == "usergroups")
 				LEFT JOIN ".TABLE_PREFIX."users u ON(((CONCAT(',', u.additionalgroups, ',') LIKE CONCAT('%,', g.gid, ',%')) OR u.usergroup = g.gid))
 				LEFT JOIN ".TABLE_PREFIX."joinrequests j ON(j.gid=g.gid AND j.uid != 0)
 				WHERE l.uid='".$mybb->user['uid']."'
-				GROUP BY l.gid
+				GROUP BY g.gid, g.title, g.type, l.canmanagerequests, l.canmanagemembers, l.caninvitemembers
 			");
 	}
 
@@ -3675,6 +3678,7 @@ if(!$mybb->input['action'])
 	$regdate = my_date('relative', $mybb->user['regdate']);
 
 	$useravatar = format_avatar($mybb->user['avatar'], $mybb->user['avatardimensions'], '100x100');
+	$avatar_username = htmlspecialchars_uni($mybb->user['username']);
 	eval("\$avatar = \"".$templates->get("usercp_currentavatar")."\";");
 
 	$usergroup = htmlspecialchars_uni($groupscache[$mybb->user['usergroup']]['title']);
